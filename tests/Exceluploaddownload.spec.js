@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { writeExcelTest } = require('./utils/Excelutils');
 
-test('Upload download excel validation', async ({ page }) => {
+test('Upload download excel validation', async ({ page }, testInfo) => {
   const textSearch = 'Mango';
   const updateValue = '350';
 
@@ -11,8 +11,8 @@ test('Upload download excel validation', async ({ page }) => {
   await page.getByRole('button', { name: 'Download' }).click();
   const download = await downloadPromise;
 
-  // Ask Playwright directly for the real path it saved the download to
-  const filePath = await download.path();
+  const filePath = testInfo.outputPath(download.suggestedFilename());
+  await download.saveAs(filePath);
   console.log('Downloaded file saved at:', filePath);
 
   // Edit the downloaded file: find "Mango", update the cell 2 columns to the right (price)
