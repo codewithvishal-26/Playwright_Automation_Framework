@@ -1,0 +1,33 @@
+name: Playwright CLI Booking Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: cli-demo
+    env:
+      TEST_USER_EMAIL: ${{ secrets.EVENTHUB_TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.EVENTHUB_TEST_USER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: cli-demo/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cli-booking-report
+          path: |
+            cli-demo/playwright-report/
+            cli-demo/test-results/
+          retention-days: 14

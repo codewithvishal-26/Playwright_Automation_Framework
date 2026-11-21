@@ -1,0 +1,19 @@
+{
+  "name": "playwright-cli-booking-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright CLI skill and a booking-cancellation browser test example.",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report",
+    "cli:open": "playwright-cli open"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^26.6.6"
+  },
+  "dependencies": {
+    "@playwright/cli": "^0.1.23"
+  }
+}
